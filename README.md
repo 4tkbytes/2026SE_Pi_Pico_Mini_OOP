@@ -18,6 +18,9 @@ Students will be recreating a model of the pedestrian crossing on Unwins Bridge 
 
 ### Components
 
+> [!Note]
+> Students can build using physical components or prototype using this [Template Wokwi Project](https://wokwi.com/projects/433242006092880897).
+
 - Breadboard
 - Jumper leads
 - Pi Pico
@@ -52,21 +55,18 @@ Students will be recreating a model of the pedestrian crossing on Unwins Bridge 
 
 ![A street view image of the system we will be modeling](/images/real_world_situation.png "The traffic lights, pedestrian warning lights, pedestrian button and control system.")
 
-From the above real world control system we will model:
+### Final Product
 
-- Overloading and overriding polymorphism
-- Inheritance, multilevel inheritance and multiple class inheritance
-- Abstraction
-- Decomposition and composition
-- Generalisation
-- Encapsulation
-- Object instantiation, objects as instance variables
+![Video of Final Project in Operations](/images/demonstration.gif)
 
 ### Wire your system
 
 ![A prototype of the model](/images/prototype_model.png "Use the below components to wire this model.")
 
 ### Components
+
+> [!Note]
+> Students can build using physical components or prototype using this [Template Wokwi Project](https://wokwi.com/projects/433242006092880897).
 
 - Breadboard
 - Jumper leads
@@ -91,17 +91,22 @@ From the above real world control system we will model:
 | GND  | Circuit Ground       |
 | 3V3  | Button logic voltage |
 
-## UML Diagram
+### Final UML Diagram
 
 ```mermaid
 classDiagram
     class Pin {
+        -__pin: int
+        +__init__(pin: int)
         +value()
         +high()
         +low()
+        +toggle()
     }
 
     class PWM {
+        -__pin: int
+        +__init__(pin: int)
         +freq(freq: int)
         +duty_u16(duty: int)
     }
@@ -160,17 +165,15 @@ classDiagram
 > [!Note]
 > Inheritance and association labels are note required in a UML diagram but have been added for understanding.
 
-## Versions
+## Script Versions Provided
 
 | Version | Notes                                                                                                                     |
 | ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| v01.py  | Basic "Blink" Program (the Hello World of mechatronics).                                                                  |
-| v02.py  | Test wiring and use basic methods from parent `Pin` class.                                                                |
-| v03.py  | Implement a child class of MicroPython `Pin` class for the traffic lights, demonstrating Inheritance and Polymorphism.    |
-| v04.py  | Move the `Led_Light` class to a separate file, demonstrating abstraction.                                                 |
-| v05.py  | Write a `Button` class and test it by instantiating it and controlling the `red_light` instance of the `Led_Light` class. |
-| v06.py  | Implement a Event Trigger for when the button has been pressed.                                                           |
-| v07.py  | Demo code only of Multiple Inheritence.                                                                                   |
+| v01.py  | Basic "Blink" Program (the Hello World of mechatronics) for Unit Testing the Microcontroller.                                                                  |
+| v02.py  | Unit Test for wiring and use basic methods from parent `Pin` and `PWM` class.                                                                |
+| v03.py  | A blank python script.    |
+
+##
 
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href="https://github.com/TempeHS/MicroPython_OOP_Pi_Pico_Mini_Project_Source">MicroPython_OOP_Pi_Pico_Mini_Project_Source
 </a> and <a property="dct:title" rel="cc:attributionURL" href="https://github.com/TempeHS/MicroPython_OOP_Pi_Pico_Mini_Project_Template">MicroPython_OOP_Pi_Pico_Mini_Project_Template
