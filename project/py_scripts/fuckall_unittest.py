@@ -1,11 +1,13 @@
-import fuckall
+from audio_notification import Audio_Notification
+from led_light import Led_Light
+from pedestrian_button import Pedestrian_Button
 from time import sleep, time
 
 def test_led():
     # firstly get it to initialise
-    red_light = fuckall.Led_Light(3, True, False)
+    red_light = Led_Light(3, True, False)
     # check using pin val
-    assert isinstance(red_light, fuckall.Led_Light), "class aint initialised"
+    assert isinstance(red_light, Led_Light), "class aint initialised"
     
     # next get it to turn on
     red_light.on()
@@ -18,7 +20,7 @@ def test_led():
     sleep(1)
     
     counter = 0 
-    # curry freak
+
     previous_state_1 = red_light.led_light_state
     while counter < 10:
         red_light.flash()
@@ -51,9 +53,10 @@ def test_led():
     print("-------------------------------------------")
     print("LED Light has finished testing, all success")
     print("-------------------------------------------")
+    
+    print("Resetting value back to default: 0")
 
 def test_button():
-    
     # Replace 22 with the GPIO pin your button is connected to
     button = Pedestrian_Button(22, debug=True)
 

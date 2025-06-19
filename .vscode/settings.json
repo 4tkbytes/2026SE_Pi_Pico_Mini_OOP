@@ -22,7 +22,8 @@
   "python.analysis.typeshedPaths": ["~/.micropico-stubs/included"],
   "python.analysis.extraPaths": [
     "~/.micropico-stubs/included",
-    "./examples/smooth_"
+    "./examples/smooth_",
+    "./project/lib"
   ],
   "micropico.syncFolder": "project",
   "workbench.colorTheme": "Default Dark+",

@@ -1,7 +1,6 @@
 from machine import Pin
 from time import sleep, time
 
-
 class Led_Light(Pin):
     # child class inherits the parent 'Pin' class
     def __init__(self, pin, flashing=False, debug=False):
