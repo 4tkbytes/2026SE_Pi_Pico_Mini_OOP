@@ -30,6 +30,13 @@ class TrafficLightSubsystem:
         self.__red.off()
         self.__amber.off()
         self.__green.on()
+    
+    def off(self):
+        if self.__debug:
+            print("Traffic: All lights are OFF")
+        self.__red.off()
+        self.__amber.off()
+        self.__green.off()
 
 class PedestrianSubsystem:
     def __init__(self, red: Led_Light, green: Led_Light, button: Pedestrian_Button, buzzer: Audio_Notification, debug=False):
@@ -65,3 +72,9 @@ class PedestrianSubsystem:
     
     def reset_button(self):
         self.__button.button_state = False
+    
+    def off(self):
+        if self.__debug:
+            print("Pedestrian: All lights are OFF")
+        self.__red.off()
+        self.__green.off()

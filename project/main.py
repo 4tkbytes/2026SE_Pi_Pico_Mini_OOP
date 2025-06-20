@@ -7,7 +7,7 @@ from time import sleep
 sleep(0.1)
 
 # File name of the script to import
-file_name = "fuckall_unittest"
+file_name = "boogeraids"
 
 # Add the path to the sys.path
 sys.path.append("/py_scripts")
