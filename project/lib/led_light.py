@@ -5,7 +5,7 @@ class Led_Light(Pin):
     # child class inherits the parent 'Pin' class
     def __init__(self, pin, flashing=False, debug=False):
         super().__init__(pin, Pin.OUT)
-        self.led_light_state
+        # self.led_light_state
         self.__debug = debug
         self.__pin = pin
         self.__flashing = flashing

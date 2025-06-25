@@ -40,7 +40,7 @@ def Subsystem_Driver():
     print("Pass if: Red ON, Amber OFF, Green OFF")
     print("Showing red")
     traffic_subsystem.show_red()
-    if not traffic_subsystem.__red.value() == 1:
+    if not traffic_subsystem.__red.led_light_state == 1:
         print("Red is not on")
         error = True
     sleep(1)
@@ -48,7 +48,7 @@ def Subsystem_Driver():
     print("Pass if: Red OFF, Amber ON, Green OFF")
     print("Showing amber")
     traffic_subsystem.show_amber()
-    if not traffic_subsystem.__amber.value() == 1:
+    if not traffic_subsystem.__amber.led_light_state == 1:
         print("Amber is not on")
         error = True
     sleep(1)
@@ -56,7 +56,7 @@ def Subsystem_Driver():
     print("Pass if: Red OFF, Amber OFF, Green ON")
     print("Showing green")
     traffic_subsystem.show_green()
-    if not traffic_subsystem.__green.value() == 1:
+    if not traffic_subsystem.__green.led_light_state == 1:
             print("Green is not on")
             error = True
     sleep(1)
@@ -67,35 +67,42 @@ def Subsystem_Driver():
     print("-------------------------------------------")
     error = False
 
-
     print("All lights are OFF")
     traffic_subsystem.off()
-    if not traffic_subsystem.__red.value() == 0: print("Red is expected to be off"); error = True
-    if not traffic_subsystem.__green.value() == 0: print("Green is expected to be off"); error = True
+    if not traffic_subsystem.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not traffic_subsystem.__green.led_light_state == 0: print("Green is expected to be off"); error = True
     sleep(1)
     
     print("Showing walking")
     p_subsystem.show_walk()
-    if not traffic_subsystem.__red.value() == 0: print("Red is expected to be off"); error = True
-    if not traffic_subsystem.__green.value() == 0: print("Green is expected to be on"); error = True
+    if not traffic_subsystem.__red.led_light_state== 0: print("Red is expected to be off"); error = True
+    if not traffic_subsystem.__green.led_light_state == 0: print("Green is expected to be on"); error = True
     sleep(2)
 
     print("Showing warning")
-    p_subsystem.show_warning()
-    if not traffic_subsystem.__red.value() == 1: print("Red is expected to be on"); error = True
-    if not traffic_subsystem.__green.value() == 0: print("Green is expected to be off"); error = True
-    sleep(2)
+    for i in range(3):
+        p_subsystem.show_warning()
+        if not traffic_subsystem.__red.led_light_state == 0: print("Red is expected to be on"); error = True
+        if not traffic_subsystem.__green.led_light_state == 0: print("Green is expected to be off"); error = True
+        sleep(1)
 
     print("Showing stop")
     p_subsystem.show_stop()
-    if not traffic_subsystem.__red.value() == 1: print("Red is expected to be off"); error = True
-    if not traffic_subsystem.__green.value() == 0: print("Green is expected to be off"); error = True
+    if not traffic_subsystem.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not traffic_subsystem.__green.led_light_state == 0: print("Green is expected to be off"); error = True
     sleep(2)
     
     print("-------------------------------------------")
     if not error: print("✅ Pedestrian System success")
     else: print("❌ Pedestrian System failed")
     print("-------------------------------------------")
+    error = False
+    # testing out button
+    print("Resetting button state. Please release your finger if it is on it")
+    p_subsystem.reset_button()
+    print("Testing out button press. Click on it")
+    while p_subsystem.is_button_pressed:
+        print("Awaiting button press")
     
     print("-------------------------------------------")
     print("❌ Cleaning Up")
