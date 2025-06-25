@@ -101,8 +101,21 @@ def Subsystem_Driver():
     print("Resetting button state. Please release your finger if it is on it")
     p_subsystem.reset_button()
     print("Testing out button press. Click on it")
-    while p_subsystem.is_button_pressed:
-        print("Awaiting button press")
+    counter = 0
+    while not p_subsystem.is_button_pressed():
+        if (counter % 60) == 0:
+            print("Awaiting button press")
+        if (counter == 60*10):
+            print("Button has not been registered. Error registered")
+            error = True
+            break
+    
+    print("Button registered input")
+    
+    print("-------------------------------------------")
+    if not error: print("✅ Pedestrian Button success")
+    else: print("❌ Pedestrian Button failed")
+    print("-------------------------------------------")
     
     print("-------------------------------------------")
     print("❌ Cleaning Up")
