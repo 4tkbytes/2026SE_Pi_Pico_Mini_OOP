@@ -37,6 +37,9 @@ class TrafficLightSubsystem:
         self.__red.off()
         self.__amber.off()
         self.__green.off()
+    
+    def error(self):
+        self.__amber.flash()
 
 class PedestrianSubsystem:
     def __init__(self, red: Led_Light, green: Led_Light, button: Pedestrian_Button, buzzer: Audio_Notification, debug=False):
@@ -78,3 +81,36 @@ class PedestrianSubsystem:
             print("Pedestrian: All lights are OFF")
         self.__red.off()
         self.__green.off()
+
+class Controller:
+    def __init__(self, p_red, p_green, t_red, t_amber, t_green, button, buzzer, debug):
+        self.__traffic_lights = TrafficLightSubsystem(t_red, t_amber, t_green, debug)
+        self.__pedestrian_signals = PedestrianSubsystem(p_red, p_green, button, buzzer, debug)
+        self.__debug = debug
+        self.state = "IDLE"
+        self.last_state_change = time()
+    
+    def set_idle_state(self):
+        if self.__debug: print("System: IDLE state")
+        self.__pedestrian_signals.show_stop()
+        self.__traffic_lights.show_green()
+    
+    def set_change_state(self):
+        if self.__debug: print("System: CHANGE state")
+        self.__traffic_lights.show_amber()
+        self.__pedestrian_signals.show_stop()
+    
+    def set_walk_state(self):
+        if self.__debug: print("System: WALK state")
+        self.__pedestrian_signals.show_walk()
+        self.__traffic_lights.show_red
+    
+    def set_warning_state(self):
+        if self.__debug: print("System: WARNING state")
+        self.__pedestrian_signals.show_warning()
+        self.__traffic_lights.show_red()
+    
+    def set_error_state(self):
+        if self.__debug: print("System: ERROR state")
+        self.__traffic_lights.error()
+        self.__pedestrian_signals.off()
