@@ -4,6 +4,12 @@ from audio_notification import Audio_Notification
 from pedestrian_button import Pedestrian_Button
 from time import sleep, time
 
+instancingWorks = False
+trafficLEDWorks = False
+pedestrianWorks = False
+buttonWorks = False
+fullTrafficControllerWorks = False
+
 def Subsystem_Driver():
     debug = False
     
@@ -29,7 +35,7 @@ def Subsystem_Driver():
     assert isinstance(traffic_subsystem, TrafficLightSubsystem), "class aint initialised"
     assert isinstance(p_subsystem, PedestrianSubsystem), "class aint initialised"
     print("-------------------------------------------")
-    print("✅ Class instantiation success")
+    print("✅ Class instantiation success"); instancingWorks = True
     print("-------------------------------------------")
     
     error = False
@@ -62,7 +68,7 @@ def Subsystem_Driver():
     sleep(1)
     
     print("-------------------------------------------")
-    if not error: print("✅ Traffic LED success")
+    if not error: print("✅ Traffic LED success"); trafficLEDWorks = True
     else: print("❌ Traffic LED failed")
     print("-------------------------------------------")
     error = False
@@ -82,9 +88,10 @@ def Subsystem_Driver():
     print("Showing warning")
     for i in range(3):
         p_subsystem.show_warning()
-        if not traffic_subsystem.__red.led_light_state == 0: print("Red is expected to be on"); error = True
+        if not traffic_subsystem.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+        if not traffic_subsystem.__amber.led_light_state == 1: print("Amber is expected to be on"); error = True
         if not traffic_subsystem.__green.led_light_state == 0: print("Green is expected to be off"); error = True
-        sleep(1)
+        sleep(0.5)
 
     print("Showing stop")
     p_subsystem.show_stop()
@@ -93,7 +100,7 @@ def Subsystem_Driver():
     sleep(2)
     
     print("-------------------------------------------")
-    if not error: print("✅ Pedestrian System success")
+    if not error: print("✅ Pedestrian System success"); pedestrianWorks = True
     else: print("❌ Pedestrian System failed")
     print("-------------------------------------------")
     error = False
@@ -107,10 +114,14 @@ def Subsystem_Driver():
     print("Button registered input")
     
     print("-------------------------------------------")
-    if not error: print("✅ Pedestrian Button success")
+    if not error: print("✅ Pedestrian Button success"); buttonWorks = True
     else: print("❌ Pedestrian Button failed")
     print("-------------------------------------------")
     error = False
+    
+    print("Resetting values of pins")
+    p_subsystem.off()
+    traffic_subsystem.off()
     
     print("Testing controller")
     
@@ -121,38 +132,62 @@ def Subsystem_Driver():
     
     print("Testing idle state")
     controller.set_idle_state()
+    if not controller.__traffic_lights.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not controller.__traffic_lights.__amber.led_light_state == 0: print("Amber is expected to be off"); error = True
+    if not controller.__traffic_lights.__green.led_light_state == 1: print("Green is expected to be on"); error = True
+    
+    if not controller.__pedestrian_signals.__red.led_light_state == 1: print("Red is expected to be on"); error = True
+    if not controller.__pedestrian_signals.__green.led_light_state == 0: print("Green is expected to be off"); error = True
     sleep(3)
     
     print("Testing change state")
     controller.set_change_state()
+    if not controller.__traffic_lights.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not controller.__traffic_lights.__amber.led_light_state == 1: print("Amber is expected to be on"); error = True
+    if not controller.__traffic_lights.__green.led_light_state == 0: print("Green is expected to be off"); error = True
+    
+    if not controller.__pedestrian_signals.__red.led_light_state == 1: print("Red is expected to be on"); error = True
+    if not controller.__pedestrian_signals.__green.led_light_state == 0: print("Green is expected to be off"); error = True
     sleep(3)
 
     
     print("Testing walk state")
     controller.set_walk_state()
+    if not controller.__traffic_lights.__red.led_light_state == 1: print("Red is expected to be on"); error = True
+    if not controller.__traffic_lights.__amber.led_light_state == 0: print("Amber is expected to be off"); error = True
+    if not controller.__traffic_lights.__green.led_light_state == 0: print("Green is expected to be off"); error = True
+    
+    if not controller.__pedestrian_signals.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not controller.__pedestrian_signals.__green.led_light_state == 1: print("Green is expected to be on"); error = True
     sleep(3)
 
     
     print("Testing warning state")
-    controller.set_warning_state()
-    if not controller.__traffic_lights.__red.led_light_state == 1:
-        print("Expected: Traffic Red should be on")
-        error = True
+    controller.set_warning_state()    
+    if not controller.__traffic_lights.__red.led_light_state == 1: print("Red is expected to be on"); error = True
+    if not controller.__traffic_lights.__amber.led_light_state == 0: print("Amber is expected to be off"); error = True
+    if not controller.__traffic_lights.__green.led_light_state == 0: print("Green is expected to be off"); error = True
+    
+    if not controller.__pedestrian_signals.__red.led_light_state == 1: print("Red is expected to be flashing/on"); error = True
+    if not controller.__pedestrian_signals.__green.led_light_state == 0: print("Green is expected to be off"); error = True
     
     if not controller.__pedestrian_signals.__red.led_light_state == 1:
-        print("Expected: Pedestrian Red should be flashing")
+        print("Pedestrian Red expected to flash")
         error = True
     sleep(3)
     
     print("Extra: Testing error")
     controller.set_error_state()
-    if not controller.__traffic_lights.__amber.led_light_state == 1:
-        error = True
-        print("Expected: Amber should be flashing")
+    if not controller.__traffic_lights.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not controller.__traffic_lights.__amber.led_light_state == 1: print("Amber is expected to be on/flashing"); error = True
+    if not controller.__traffic_lights.__green.led_light_state == 0: print("Green is expected to be off"); error = True
+    
+    if not controller.__pedestrian_signals.__red.led_light_state == 0: print("Red is expected to be off"); error = True
+    if not controller.__pedestrian_signals.__green.led_light_state == 0: print("Green is expected to be off"); error = True
     sleep(3)
     
     print("-------------------------------------------")
-    if not error: print("✅ Full traffic subsystem success")
+    if not error: print("✅ Full traffic subsystem success"); fullTrafficControllerWorks = True
     else: print("❌ Full traffic subsystem failed")
     print("-------------------------------------------")
     
@@ -165,5 +200,14 @@ def Subsystem_Driver():
     print("-------------------------------------------")
     print("Subsystem has finished testing, check results")
     print("-------------------------------------------")
+    
+    print(f"""
+          Summary: 
+            - Class instancing: {instancingWorks}
+            - Traffic LED: {trafficLEDWorks}
+            - Pedestrian System: {pedestrianWorks}
+            - Pedestrian Button: {buttonWorks}
+            - Full Traffic Controller: {fullTrafficControllerWorks} 
+          """)
 
 Subsystem_Driver()
